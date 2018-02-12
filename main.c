@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <ctype.h>
+
 typedef struct {
   char* id;
   char* firstName;
@@ -18,7 +20,7 @@ typedef struct{
 
 struct student_records{
   student_node *head;
-  student_node *tail;
+ // student_node *tail;
 };
 
 int getStringLength(char* str){
@@ -46,7 +48,7 @@ int checkStrings(char *str1,char *str2){
 }
 int main(int argc, char** argv) {
   
-  char* id;
+  int id;
   char* first_name;
   char* last_name;
   float gpa;
@@ -72,7 +74,7 @@ int main(int argc, char** argv) {
 	case 'i':
 	   iFlag=1;
 	   hasFlags=1;
-	   id=optarg;
+	   id=atoi(optarg);
 	   break;
 	case 'f':
 	   fFlag=1;
@@ -90,7 +92,7 @@ int main(int argc, char** argv) {
 	   outputFile=optarg;
            break;
 	case '?':
-	   if (optopt=='i'){
+	   if (optopt=='i' || optopt=='o' || optopt=='f' || optopt=='m'){
 		printf("OTHER ERROR");
 		return -1;
 	   }
@@ -98,38 +100,43 @@ int main(int argc, char** argv) {
 	   printf("default \n");
      }	
 }
- 	
-  printf("last name %s", last_name);
+ 
   if(hasFlags==0){
 	printf("NO QUERY PROVIDED");
 	return -1;
   }
 	
-/*
+
   //if v flag is set, and any flag that isnt O is set, error
   if (vFlag==1){
-	if(fFlag==1 || mFlag==1 || iFlag==0){
+	if(fFlag==1 || mFlag==1 || iFlag==1){
 		printf("OTHER ERROR");
 		return -1;
 	}
   }
-
- argv++;
-  char *inputFile= *argv;
+ 
+  char *inputFile;
+  argv+=optind;
+  inputFile=*argv;
   FILE *fp;
-  fp=fopen(inputFile,"r+");
-  //check if file exists, if not print correct Error Message and exit
-    
+  printf("input file : %d %d %s \n ",optind,argc, inputFile);
+  if ((fp=fopen(inputFile,"r"))== NULL){
+	printf("FAILED TO PARSE FILE");
+	return -1;	
+
+  }
+  else
+	printf("found file"); 
   //initialize linked list
    struct student_records list;
    list.head=NULL;
-   list.head=NULL;
-*/
+   
+
   /*
   * This formatting for the string
   * that you are expected to follow
   */
  // printf("%d %s %s %.2f %s\n", id, first_name, last_name, gpa, major); 
- printf("just testing stuff out xd\n");
+ 
  return 0;
 }
