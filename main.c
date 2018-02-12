@@ -7,18 +7,18 @@ typedef struct {
   char* lastName;
   char* major;
   float  gpa;
-}student_records;
+}student_info;
 
 typedef struct{
-  student_records student;
+  student_info student;
   struct student_node* next;
   struct student_node* prev;
 }student_node;
 
-typedef struct{
+struct student_records{
   student_node *head;
   student_node *tail;
-}student_list;
+};
 
 
 //function to check if 2 strings are equal
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
   //check if file exists, if not print correct Error Message and exit
     
   //initialize linked list
-  student_records list;
+ // student_records list;
   /*
   * This formatting for the string
   * that you are expected to follow
