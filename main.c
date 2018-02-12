@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <getopt.h>
 
 typedef struct {
   char* id;
@@ -53,17 +55,36 @@ int main(int argc, char** argv) {
   int  hasM=0;
   int  hasI=0;
   int hasFlags=0;
-  char** input;
-  input=argv;
-  while (count<argc){
-    
- 	 count++;
- 	 input++;
-  } 
+  char* inputFile;
+  char c;
+  while((c=getopt(argc, argv,"v:i:f:m:o" ))!=-1){
+     switch(c){
+	case 'v':
+	   printf("found v flag \n");
+	   break;
+	case 'i':
+	   printf("found i flag \n");
+	   break;
+	case 'f':
+	   printf("found f flag \n");
+	   break;
+	case 'm':
+	   printf("found m flag \n");
+	   break;
+	case 'o':
+	   printf("found o flag \n");
+           break;
+	default:
+	   printf("not a correct flag \n");
+
+     }	
+}	
+ 
   if(hasFlags==0){
 	printf("NO QUERY PROVIDED");
 	return -1;
   }
+	
   //check if file exists, if not print correct Error Message and exit
     
   //initialize linked list
