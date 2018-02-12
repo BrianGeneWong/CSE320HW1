@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
-
 typedef struct {
   char* id;
   char* firstName;
@@ -22,7 +21,16 @@ struct student_records{
   student_node *tail;
 };
 
-
+int getStringLength(char* str){
+  int count=0;
+  char c = *str;
+  while(c!='\0'){
+	count++;
+	str++;
+	c=*str;
+  }
+  return count;
+}
 //function to check if 2 strings are equal
 //returns 0 if strings are not equal, 1 if they are
 int checkStrings(char *str1,char *str2){
@@ -37,63 +45,91 @@ int checkStrings(char *str1,char *str2){
   return 1;
 }
 int main(int argc, char** argv) {
-  /*
-  * Dummy values
-  */
-  int id;
+  
+  char* id;
   char* first_name;
   char* last_name;
   float gpa;
   char* major;
-  //start with the first argument 
-  argv++;
+  char* outputFile;
   //first we will parse through all argvs see if incorrect flags and stuff
   int count=0;
-  int  hasV=0;
-  int  hasO=0;
-  int  hasF=0;
-  int  hasM=0;
-  int  hasI=0;
+  int  vFlag=0;
+  int  oFlag=0;
+  int  iFlag=0;
+  int  mFlag=0;
+  int  fFlag=0;
   int hasFlags=0;
-  char* inputFile;
-  char c;
-  while((c=getopt(argc, argv,"v:i:f:m:o" ))!=-1){
+  int c;
+  extern int opterr;
+  opterr=0;
+  while((c=getopt(argc, argv,"vi:f:m:o:" ))!=-1){
      switch(c){
 	case 'v':
-	   printf("found v flag \n");
+	   hasFlags=1;
+	   vFlag=1;
 	   break;
 	case 'i':
-	   printf("found i flag \n");
+	   iFlag=1;
+	   hasFlags=1;
+	   id=optarg;
 	   break;
 	case 'f':
-	   printf("found f flag \n");
+	   fFlag=1;
+	   hasFlags=1;
+	   last_name=optarg;
 	   break;
 	case 'm':
-	   printf("found m flag \n");
+	   mFlag=1;
+	   hasFlags=1;
+	   major=optarg;
 	   break;
 	case 'o':
-	   printf("found o flag \n");
+	   oFlag=1;
+           hasFlags=1;
+	   outputFile=optarg;
            break;
+	case '?':
+	   if (optopt=='i'){
+		printf("OTHER ERROR");
+		return -1;
+	   }
 	default:
-	   printf("not a correct flag \n");
-
+	   printf("default \n");
      }	
-}	
- 
+}
+ 	
+  printf("last name %s", last_name);
   if(hasFlags==0){
 	printf("NO QUERY PROVIDED");
 	return -1;
   }
 	
+/*
+  //if v flag is set, and any flag that isnt O is set, error
+  if (vFlag==1){
+	if(fFlag==1 || mFlag==1 || iFlag==0){
+		printf("OTHER ERROR");
+		return -1;
+	}
+  }
+
+ argv++;
+  char *inputFile= *argv;
+  FILE *fp;
+  fp=fopen(inputFile,"r+");
   //check if file exists, if not print correct Error Message and exit
     
   //initialize linked list
- // student_records list;
+   struct student_records list;
+   list.head=NULL;
+   list.head=NULL;
+*/
   /*
   * This formatting for the string
   * that you are expected to follow
   */
- // printf("%d %s %s %.2f %s\n", id, first_name, last_name, gpa, major);
-  printf("just testing stuff rn \n"); 
+ // printf("%d %s %s %.2f %s\n", id, first_name, last_name, gpa, major); 
+ printf("just testing stuff out xd\n");
  return 0;
 }
