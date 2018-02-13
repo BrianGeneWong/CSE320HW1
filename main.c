@@ -164,11 +164,14 @@ int updateNode(struct student_records *list,int id,char* f_name, char* l_name,fl
 	//search for the id
 	student_node *currNode=list->head;
 	while(currNode!=NULL){
+	//	printf("%d   %d\n",currNode->student.id, id);
 		if(currNode->student.id==id){
+//			printf("found a matching update id\n");
 			currNode->student.gpa=gpa;	
 			copyName(currNode->student.firstName,f_name);	
 			copyName(currNode->student.lastName,l_name);
 			copyMajor(currNode->student.major,major);
+			return 0;
 		}
 		currNode=currNode->next;
 	}
@@ -423,6 +426,10 @@ int main(int argc, char** argv) {
 		}
 	}
 	else if (checkStrings(command, "UPDATE")==1){
+		if(updateNode(list,f_id,f_fname,f_lname,f_gpa,f_major)==-1){
+			printf("STUDENT RECORD CANNOT BE DELETED NOR UPDATED\n");
+			return -1;
+		}
 	}
 	else{
 		printf("FAILED TO PARSE FILE\n");
