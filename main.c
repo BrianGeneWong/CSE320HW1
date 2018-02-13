@@ -192,6 +192,33 @@ int getStringLength(char* str){
   }
   return count;
 }
+
+int outputToFile(char* output, struct student_records *list){
+	FILE *fp;
+	char choice;
+	if (access(output,F_OK)==0){
+		//ask user if they want to overwrite
+		printf("do you want to overwrite the file? y/n :  ");
+		scanf("%c",&choice);
+		if (choice=='n'){
+			printf("FILE EXISTS\n");
+			return -1;
+		}
+	}
+	fp=fopen(output,"w");
+	student_node* currNode=list->head;
+	while(currNode!=NULL){
+		student_info stu=currNode->student;
+		int id=stu.id;
+		char* firstName=stu.firstName;
+		char* lastName=stu.lastName;
+		char* major=stu.major;
+		float gpa=stu.gpa;
+		fprintf(fp,"%d %s %s %.2f %s\n",id,firstName,lastName,gpa,major);
+		currNode=currNode->next;
+	}
+	return 0;
+}
 //function to check if 2 strings are equal
 //returns 0 if strings are not equal, 1 if they are
 int checkStrings(char *str1,char *str2){
@@ -206,11 +233,6 @@ int checkStrings(char *str1,char *str2){
   if (*str2!='\0')
   	return 0;
   return 1;
-}
-//copy str2 into str1
- int fieldCheck(){
-	
-    return 0;
 }
 int main(int argc, char** argv) {
   
@@ -263,10 +285,11 @@ int main(int argc, char** argv) {
 		return -1;
 	   }
 	default:
-	   printf("default \n");
+	   printf("OTHER ERROR\n");
+	   return -1;
      }	
 }
- 
+//  printf("id: %d\n", id); 
   if(hasFlags==0){
 	printf("NO QUERY PROVIDED\n");
 	return -1;
@@ -338,6 +361,8 @@ int main(int argc, char** argv) {
   */
    if(vFlag==1)
 	printList(list);
+   if(oFlag==1)
+	outputToFile(outputFile,list);
   // printf("%d %s %s %.2f %s\n", f_id, f_fname, f_lname, f_gpa,f_major);
    free(command);
    free(f_fname);
