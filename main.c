@@ -318,6 +318,7 @@ int main(int argc, char** argv) {
   int  fFlag=0;
   int hasFlags=0;
   int c;
+  int l;
   extern int opterr;
   opterr=0;
   while((c=getopt(argc, argv,"vi:f:m:o:" ))!=-1){
@@ -339,11 +340,21 @@ int main(int argc, char** argv) {
 	   fFlag=1;
 	   hasFlags=1;
 	   last_name=optarg;
+	   l=getStringLength(optarg);
+	   if(l<3 || l>10){
+		printf("OTHER ERROR\n");
+		return -1;
+	   }
 	   break;
 	case 'm':
 	   mFlag=1;
 	   hasFlags=1;
 	   major=optarg;
+	   l=getStringLength(optarg);
+	   if(l!=3){
+		printf("OTHER ERROR\n");
+		return -1;
+	   }
 	   break;
 	case 'o':
 	   oFlag=1;
