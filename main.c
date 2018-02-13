@@ -33,7 +33,27 @@ void stringCopy(char *str1, char *str2){
    }while(*str2!='\0');
 }
 
+void copyName(char*str1,char*str2){
+	//first char is capital
+	*str1=toupper(*str2);
+	str1++;
+	str2++;
+	
+  	 do{
+		*str1=tolower(*str2);
+		str1++;
+		str2++;
+   	}while(*str2!='\0');
+}
 
+void copyMajor(char *str1, char *str2){
+  // printf(" %s  ",  str2);
+   do{
+	*str1=toupper(*str2);
+	str1++;
+	str2++;
+   }while(*str2!='\0');
+}
 int addNode(struct student_records *list,int id,char* f_name, char* l_name,float gpa, char* major ){
    //check if id is unique first
    //if list is empty, easy
@@ -48,10 +68,10 @@ int addNode(struct student_records *list,int id,char* f_name, char* l_name,float
 	node->next=NULL;
 	node->prev=NULL;
 	node->student.id=id;
-	stringCopy(node->student.firstName,f_name);
-        stringCopy(node->student.lastName,l_name);
+	copyName(node->student.firstName,f_name);
+        copyName(node->student.lastName,l_name);
 	node->student.gpa=gpa;	
-        stringCopy(node->student.major,major);
+        copyMajor(node->student.major,major);
 	list->head=node;
 	return 0;
     }
@@ -65,19 +85,37 @@ int addNode(struct student_records *list,int id,char* f_name, char* l_name,float
 		node->student.lastName=malloc(sizeof(l_name));
 		node->student.major=malloc(sizeof(major));
 		node->student.id=id;
-		stringCopy(node->student.firstName,f_name);
-		 stringCopy(node->student.lastName,l_name);
+		copyName(node->student.firstName,f_name);
+		copyName(node->student.lastName,l_name);
 		node->student.gpa=gpa;	
-	        stringCopy(node->student.major,major);
+	        copyMajor(node->student.major,major);
 		if(currNode==list->head){
 			list->head=node;
 		node->prev=currNode->prev;
 		node->next=currNode;
 		currNode->prev=node;
+		return 0;
         	 } 
-	  } 
+	  }
+	if(currNode->next==NULL){
+		
+       		student_node *node=malloc(sizeof(student_node));
+		node->student.firstName=malloc(sizeof(f_name));
+		node->student.lastName=malloc(sizeof(l_name));
+		node->student.major=malloc(sizeof(major));
+		node->student.id=id;
+		copyName(node->student.firstName,f_name);
+		copyName(node->student.lastName,l_name);
+		node->student.gpa=gpa;	
+	        copyMajor(node->student.major,major);
+		currNode->next=node;
+		node->next=NULL;
+		return 0;
+	} 
      currNode=currNode->next;
     }
+    //if reaaches the end and currNode==NULL
+	
    return 0;
 }
 
@@ -118,6 +156,31 @@ int deleteNode(struct student_records *list ,int id){
 		currNode=currNode->next;
 	}
 	return -1;
+}
+
+int updateNode(struct student_records *list,int id,char* f_name, char* l_name,float gpa, char* major ){
+	if(list->head==NULL)
+		return -1;	
+	//search for the id
+	student_node *currNode=list->head;
+	while(currNode!=NULL){
+		if(currNode->student.id==id){
+			currNode->student.gpa=gpa;	
+			copyName(currNode->student.firstName,f_name);	
+			copyName(currNode->student.lastName,l_name);
+			copyMajor(currNode->student.major,major);
+		}
+		currNode=currNode->next;
+	}
+	return -1;
+}
+void printList(struct student_records *list){
+  student_node* currNode=list->head;
+   while(currNode!=NULL){
+	student_info student=currNode->student;
+  	 printf("%d %s %s %.2f %s\n",student.id , student.firstName, student.lastName,student.gpa,student.major);
+  	currNode=currNode->next;
+   }
 }
 int getStringLength(char* str){
   int count=0;
@@ -273,10 +336,13 @@ int main(int argc, char** argv) {
   * This formatting for the string
   * that you are expected to follow
   */
-   printf("%d %s %s %.2f %s\n", f_id, f_fname, f_lname, f_gpa,f_major);
+   if(vFlag==1)
+	printList(list);
+  // printf("%d %s %s %.2f %s\n", f_id, f_fname, f_lname, f_gpa,f_major);
    free(command);
    free(f_fname);
    free(f_lname);
    free(f_major);
+   free(list);
  return 0;
 }
