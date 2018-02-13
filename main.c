@@ -203,6 +203,7 @@ void printList(struct student_records *list){
 }
 //also checks to see that all chars are alphabet
 int getStringLength(char* str){
+ // printf("str : %s\n", str);
   int count=0;
   if(str==NULL)
 	return 0;
@@ -216,6 +217,7 @@ int getStringLength(char* str){
 	str++;
 	c=*str;
   }
+ // printf("end of getstrlenght count : %d\n",count);
   return count;
 }
 
