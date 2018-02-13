@@ -261,8 +261,8 @@ int checkArgs(int id, char* firstName, char* lastName, float GPA, char* major){
 	printf("%d %s %s %.2f %s\n",id,firstName,lastName,GPA,major);
 	if (id<=0)
 		return -1;
-//	int l=getStringLength(firstName);
-	printf("l equals %d",l);
+	int l=getStringLength(firstName);
+//	printf("l equals %d",l);
 	if (l<3 || l>10)
 		return -1;
 	l=getStringLength(lastName);
