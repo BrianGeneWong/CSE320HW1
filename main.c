@@ -211,6 +211,13 @@ void printStudent(student_node *node){
   	 printf("%d %s %s %.2f %s\n",student.id , student.firstName, student.lastName,student.gpa,student.major);
 
 }
+
+void fprintStudent(FILE *fp,student_node *node){
+	
+	student_info student=node->student;
+  	 fprintf(fp,"%d %s %s %.2f %s\n",student.id , student.firstName, student.lastName,student.gpa,student.major);
+
+}
 void printList(struct student_records *list){
   student_node* currNode=list->head;
    while(currNode!=NULL){
@@ -548,8 +555,93 @@ int main(int argc, char** argv) {
 			}
 		}	
 	}
-
+	//OUTPUT QUERY TO FILE
 	else{
+		
+		FILE *fp;
+		char choice;
+		if (access(outputFile,F_OK)==0){
+		//ask user if they want to overwrite
+		printf("do you want to overwrite the file? y/n :  ");
+		scanf("%c",&choice);
+		if (choice=='n'){
+			printf("FILE EXISTS\n");
+			return -1;
+			}
+		}
+		
+		fp=fopen(outputFile,"w");
+		student_node *node;
+		if(iFlag==1){
+		//it will find one at max
+			node=getStudentID(list, id);
+			if (node==NULL){
+				printf("STUDENT RECORD NOT FOUND\n");
+				return -1;
+			}
+			if(fFlag==1){
+				if(checkStrings(node->student.lastName,last_name)==0){
+					printf("STUDENT RECORD NOT FOUND\n");
+					return -1;
+				}
+			}
+			if(mFlag==1){
+				if(checkStrings(node->student.major,major)==0){
+					printf("STUDENT RECORD NOT FOUND\n");
+					return -1;
+				}
+			}
+			//print student fp,node;
+			fprintStudent(fp,node);
+		}
+		else{
+
+			int found=0;
+			if(mFlag==1 && fFlag==1){
+				node=list->head;
+				while(node!=NULL){
+					if (checkStrings(node->student.lastName,last_name)==1 && checkStrings(node->student.major,major)==1){
+						found=1;
+						fprintStudent(fp,node);
+					}
+					node=node->next;
+				}	
+				if(found==0){	
+					printf("STUDENT RECORD NOT FOUND\n");
+					return -1;
+				}
+			}
+			else if(mFlag==1){	
+				node=list->head;
+				while(node!=NULL){
+					if (checkStrings(node->student.major,major)==1){
+						found=1;	
+						fprintStudent(fp,node);
+					}
+					node=node->next;
+				}	
+				if(found==0){	
+					printf("STUDENT RECORD NOT FOUND\n");
+					return -1;
+				}
+			}
+			else if(fFlag==1){
+				node=list->head;
+				while(node!=NULL){
+					if (checkStrings(node->student.lastName,last_name)==1){
+						found=1;
+						fprintStudent(fp,node);
+					}
+					node=node->next;
+				}	
+				if(found==0){	
+					printf("STUDENT RECORD NOT FOUND\n");
+					return -1;
+				}
+			}
+
+		}
+		
 	}
   }
   // printf("%d %s %s %.2f %s\n", f_id, f_fname, f_lname, f_gpa,f_major);
