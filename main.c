@@ -266,13 +266,13 @@ int checkArgs(int id, char* firstName, char* lastName, float GPA, char* major){
 	if (l<3 || l>10)
 		return -1;
 	l=getStringLength(lastName);
-	printf("l equals %d",l);
+//	printf("l equals %d",l);
 	if(l<3 || l>10)
 		return -1;
 	if (GPA<0 || GPA>4)
 		return -1;
 	l=getStringLength(major);
-	printf("l equals %d",l);
+//	printf("l equals %d",l);
 	if(l!=3)
 		return -1;
 	
