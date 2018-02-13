@@ -288,7 +288,7 @@ int checkStrings(char *str1,char *str2){
   return 1;
 }
 int checkArgs(int id, char* firstName, char* lastName, float GPA, char* major){
-	printf("%d %s %s %.2f %s\n",id,firstName,lastName,GPA,major);
+//	printf("%d %s %s %.2f %s\n",id,firstName,lastName,GPA,major);
 	if (id<=0)
 		return -1;
 	int l=getStringLength(firstName);
@@ -434,16 +434,16 @@ int main(int argc, char** argv) {
  //  while ( fscanf(fp,"%s %d %s %s %f %s",command,&f_id,f_fname,f_lname,&f_gpa,f_major) !=EOF){
 	
      while (fscanf(fp,"%s",command)!=EOF){
-/*	if(checkArgs(f_id,f_fname,f_lname,f_gpa,f_major)==-1){
-		printf("FAILED TO PARSE INPUT FILE\n");
-		return -1;
-	}
-	*/
 	// printf("%s %d %s %s %.2f %s\n",command, f_id, f_fname, f_lname, f_gpa,f_major);
 //	printf("in scan loop \n");
 
 	if(checkStrings(command,"ADD")==1){
 		fscanf(fp,"%d %s %s %f %s",&f_id,f_fname,f_lname,&f_gpa,f_major); 
+		if(checkArgs(f_id,f_fname,f_lname,f_gpa,f_major)==-1){
+		printf("FAILED TO PARSE INPUT FILE\n");
+		return -1;
+	}
+	
 //		printf("head pointer: %p \n",list->head);
 		if(addNode(list,f_id,f_fname,f_lname,f_gpa,f_major)==-1){
 			printf("ID NOT UNIQUE\n");
@@ -451,7 +451,11 @@ int main(int argc, char** argv) {
 		}
 	}
 	else if (checkStrings(command, "DELETE")==1){
-		fscanf(fp,"%d",&f_id); 
+		fscanf(fp,"%d",&f_id);
+		if (f_id<=0){	
+		printf("FAILED TO PARSE INPUT FILE\n");
+		return -1;
+		} 
 		if(deleteNode(list,f_id)==-1){
 			printf("STUDENT RECORD CANNOT BE DELETED NOR UPDATED\n");
 			return -1;
