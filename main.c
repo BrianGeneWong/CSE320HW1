@@ -34,11 +34,11 @@ void stringCopy(char *str1, char *str2){
 }
 
 
-int addNode(struct student_records list,int id,char* f_name, char* l_name,float gpa, char* major ){
+int addNode(struct student_records *list,int id,char* f_name, char* l_name,float gpa, char* major ){
    //check if id is unique first
    //if list is empty, easy
 	printf("in add node function\n");
-   if (list.head==NULL){
+   if (list->head==NULL){
 	printf("list head is null\n");
 	//make node
         student_node *node=malloc(sizeof(student_node));
@@ -52,10 +52,10 @@ int addNode(struct student_records list,int id,char* f_name, char* l_name,float 
         stringCopy(node->student.lastName,l_name);
 	node->student.gpa=gpa;	
         stringCopy(node->student.major,major);
-	list.head=node;
+	list->head=node;
 	return 0;
     }
-   student_node *currNode=list.head;
+   student_node *currNode=list->head;
    while(currNode!=NULL){
 	if(currNode->student.id==id);
 		return -1;	
@@ -69,8 +69,8 @@ int addNode(struct student_records list,int id,char* f_name, char* l_name,float 
 		 stringCopy(node->student.lastName,l_name);
 		node->student.gpa=gpa;	
 	        stringCopy(node->student.major,major);
-		if(currNode==list.head){
-			list.head=node;
+		if(currNode==list->head){
+			list->head=node;
 		node->prev=currNode->prev;
 		node->next=currNode;
 		currNode->prev=node;
@@ -189,8 +189,8 @@ int main(int argc, char** argv) {
 
   } 
   //initialize linked list
-   struct student_records list;
-   list.head=NULL;
+  struct  student_records *list=malloc(sizeof(struct student_records));
+   list->head=NULL;
    
    //lets read file line by line
    
@@ -207,7 +207,7 @@ int main(int argc, char** argv) {
 //	printf("in scan loop \n");
 //	printf("command= %s\n", command);
 	if(checkStrings(command,"ADD")==1){
-		printf("head pointer: %p \n",list.head);
+		printf("head pointer: %p \n",list->head);
 		if(addNode(list,f_id,f_fname,f_lname,f_gpa,f_major)==-1){
 			printf("ID NOT UNIQUE\n");
 			return-1;
