@@ -400,10 +400,12 @@ int main(int argc, char** argv) {
    char* f_major=malloc(5);
 
    while ( fscanf(fp,"%s %d %s %s %f %s",command,&f_id,f_fname,f_lname,&f_gpa,f_major) !=EOF){
+	/*
 	if(checkArgs(f_id,f_fname,f_lname,f_gpa,f_major)==-1){
 		printf("FAILED TO PARSE INPUT FILE\n");
 		return -1;
 	}
+	*/
 //	 printf("%d %s %s %.2f %s\n", f_id, f_fname, f_lname, f_gpa,f_major);
 //	printf("in scan loop \n");
 //	printf("command= %s\n", command);
