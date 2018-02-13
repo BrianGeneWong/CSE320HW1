@@ -1,2 +1,3 @@
-ADD 4 john doe 3.43 AMS
-ADD 4 mary jane 3.87 ART
+ADD 3 john doe 3.43 AMS
+ADD 5 mary jane 3.87 ART
+DELETE 4

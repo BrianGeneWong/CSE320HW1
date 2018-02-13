@@ -37,7 +37,7 @@ void stringCopy(char *str1, char *str2){
 int addNode(struct student_records *list,int id,char* f_name, char* l_name,float gpa, char* major ){
    //check if id is unique first
    //if list is empty, easy
-//	printf("in add node function\n");
+//	printf("id= %d\n", id);
    if (list->head==NULL){
 //	printf("list head is null\n");
 	//make node
@@ -57,7 +57,7 @@ int addNode(struct student_records *list,int id,char* f_name, char* l_name,float
     }
    student_node *currNode=list->head;
    while(currNode!=NULL){
-	if(currNode->student.id==id);
+	if(currNode->student.id==id)
 		return -1;	
 	 if(currNode->student.id>id){		
        		student_node *node=malloc(sizeof(student_node));
@@ -79,6 +79,45 @@ int addNode(struct student_records *list,int id,char* f_name, char* l_name,float
      currNode=currNode->next;
     }
    return 0;
+}
+
+int deleteNode(struct student_records *list ,int id){
+	if(list->head==NULL)
+		return -1;
+	student_node* currNode=list->head;
+	while(currNode!=NULL){
+		if(currNode->student.id==id){
+			if (currNode==list->head){
+				if (currNode->next==NULL){
+					free(currNode);
+					list->head=NULL;
+					return 0;
+				}
+				else{
+					list->head=currNode->next;
+					list->head->prev=NULL;
+					free(currNode);
+					return 0;
+				}
+			}
+			else{
+				if(currNode->next==NULL){
+					currNode->prev->next=NULL;
+					free(currNode);
+					return 0;
+				}
+				else{
+					currNode->prev->next=currNode->next;
+					currNode->next->prev=currNode->prev;
+					free(currNode);
+					return 0;
+				}
+				
+			}
+		}
+		currNode=currNode->next;
+	}
+	return -1;
 }
 int getStringLength(char* str){
   int count=0;
@@ -214,6 +253,10 @@ int main(int argc, char** argv) {
 		}
 	}
 	else if (checkStrings(command, "DELETE")==1){
+		if(deleteNode(list,f_id)==-1){
+			printf("STUDENT RECORD CANNOT BE DELETED NOR UPDATED\n");
+			return -1;
+		}
 	}
 	else if (checkStrings(command, "UPDATE")==1){
 	}
