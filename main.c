@@ -110,6 +110,7 @@ int addNode(struct student_records *list,int id,char* f_name, char* l_name,float
 	        copyMajor(node->student.major,major);
 		currNode->next=node;
 		node->next=NULL;
+		node->prev=currNode;
 		return 0;
 	} 
      currNode=currNode->next;
@@ -124,6 +125,7 @@ int deleteNode(struct student_records *list ,int id){
 		return -1;
 	student_node* currNode=list->head;
 	while(currNode!=NULL){
+//	printf("name : %s\n",currNode->student.firstName);
 		if(currNode->student.id==id){
 			if (currNode==list->head){
 				if (currNode->next==NULL){
@@ -415,17 +417,19 @@ int main(int argc, char** argv) {
    float f_gpa;
    char* f_major=malloc(5);
 
-   while ( fscanf(fp,"%s %d %s %s %f %s",command,&f_id,f_fname,f_lname,&f_gpa,f_major) !=EOF){
-	/*
-	if(checkArgs(f_id,f_fname,f_lname,f_gpa,f_major)==-1){
+ //  while ( fscanf(fp,"%s %d %s %s %f %s",command,&f_id,f_fname,f_lname,&f_gpa,f_major) !=EOF){
+	
+     while (fscanf(fp,"%s",command)!=EOF){
+/*	if(checkArgs(f_id,f_fname,f_lname,f_gpa,f_major)==-1){
 		printf("FAILED TO PARSE INPUT FILE\n");
 		return -1;
 	}
 	*/
-//	 printf("%d %s %s %.2f %s\n", f_id, f_fname, f_lname, f_gpa,f_major);
+	// printf("%s %d %s %s %.2f %s\n",command, f_id, f_fname, f_lname, f_gpa,f_major);
 //	printf("in scan loop \n");
-//	printf("command= %s\n", command);
+
 	if(checkStrings(command,"ADD")==1){
+		fscanf(fp,"%d %s %s %f %s",&f_id,f_fname,f_lname,&f_gpa,f_major); 
 //		printf("head pointer: %p \n",list->head);
 		if(addNode(list,f_id,f_fname,f_lname,f_gpa,f_major)==-1){
 			printf("ID NOT UNIQUE\n");
@@ -433,12 +437,14 @@ int main(int argc, char** argv) {
 		}
 	}
 	else if (checkStrings(command, "DELETE")==1){
+		fscanf(fp,"%d",&f_id); 
 		if(deleteNode(list,f_id)==-1){
 			printf("STUDENT RECORD CANNOT BE DELETED NOR UPDATED\n");
 			return -1;
 		}
 	}
 	else if (checkStrings(command, "UPDATE")==1){
+		fscanf(fp,"%d %s %s %f %s",&f_id,f_fname,f_lname,&f_gpa,f_major); 
 		if(updateNode(list,f_id,f_fname,f_lname,f_gpa,f_major)==-1){
 			printf("STUDENT RECORD CANNOT BE DELETED NOR UPDATED\n");
 			return -1;
