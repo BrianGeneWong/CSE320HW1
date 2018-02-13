@@ -440,7 +440,7 @@ int main(int argc, char** argv) {
 	if(checkStrings(command,"ADD")==1){
 		fscanf(fp,"%d %s %s %f %s",&f_id,f_fname,f_lname,&f_gpa,f_major); 
 		if(checkArgs(f_id,f_fname,f_lname,f_gpa,f_major)==-1){
-		printf("FAILED TO PARSE INPUT\n");
+		printf("FAILED TO PARSE FILE\n");
 		return -1;
 	}
 	
@@ -453,8 +453,7 @@ int main(int argc, char** argv) {
 	else if (checkStrings(command, "DELETE")==1){
 		fscanf(fp,"%d",&f_id);
 		if (f_id<=0){	
-		printf("FAILED TO PARSE INPUT\n");
-		return -1;
+		printf("FAILED TO PARSE FILE\n");
 		} 
 		if(deleteNode(list,f_id)==-1){
 			printf("STUDENT RECORD CANNOT BE DELETED NOR UPDATED\n");
