@@ -174,6 +174,22 @@ int updateNode(struct student_records *list,int id,char* f_name, char* l_name,fl
 	}
 	return -1;
 }
+
+void freeList(struct student_records *list){
+	student_node* currNode=list->head;
+	student_node* temp;
+	while(currNode!=NULL){
+		//go through each node and free 
+		student_info stu= currNode->student;
+		free(stu.firstName);
+		free(stu.lastName);
+		free(stu.major);
+		temp=currNode->next;
+		free(currNode);
+		currNode=temp;
+	}
+	free(list);
+}
 void printList(struct student_records *list){
   student_node* currNode=list->head;
    while(currNode!=NULL){
@@ -182,10 +198,17 @@ void printList(struct student_records *list){
   	currNode=currNode->next;
    }
 }
+//also checks to see that all chars are alphabet
 int getStringLength(char* str){
   int count=0;
+  if(str==NULL)
+	return 0;
   char c = *str;
   while(c!='\0'){
+	if(c<'a'|| c>'z'){
+		if(c<'A'|| c>'Z') 
+		return -1;
+	}
 	count++;
 	str++;
 	c=*str;
@@ -234,14 +257,55 @@ int checkStrings(char *str1,char *str2){
   	return 0;
   return 1;
 }
+int checkArgs(int id, char* firstName, char* lastName, float GPA, char* major){
+	printf("%d %s %s %.2f %s\n",id,firstName,lastName,GPA,major);
+	if (id<=0)
+		return -1;
+//	int l=getStringLength(firstName);
+	printf("l equals %d",l);
+	if (l<3 || l>10)
+		return -1;
+	l=getStringLength(lastName);
+	printf("l equals %d",l);
+	if(l<3 || l>10)
+		return -1;
+	if (GPA<0 || GPA>4)
+		return -1;
+	l=getStringLength(major);
+	printf("l equals %d",l);
+	if(l!=3)
+		return -1;
+	
+	return 0;
+}
+
+int checkNum(char* num){
+	int c;
+	while(*num!='\0'){
+		if((c=isalpha(*num)!=0))
+			return -1;
+		num++;
+	}
+	return 0;
+}
+struct student_records* filterList(struct student_records* list, int iFlag, int fFlag, int mFlag){
+	struct student_records *newList=malloc(sizeof(struct student_records));
+	newList->head=NULL;
+	int prevFlag=0;
+	//if prevFlag is set to 1, we filter from new list?
+
+	return newList;
+
+
+}
 int main(int argc, char** argv) {
   
   int id;
-  char* first_name;
-  char* last_name;
+  char* first_name=NULL;
+  char* last_name=NULL;
   float gpa;
-  char* major;
-  char* outputFile;
+  char* major=NULL;
+  char* outputFile=NULL;
   //first we will parse through all argvs see if incorrect flags and stuff
   int count=0;
   int  vFlag=0;
@@ -262,6 +326,10 @@ int main(int argc, char** argv) {
 	case 'i':
 	   iFlag=1;
 	   hasFlags=1;
+	   if(checkNum(optarg)==-1){
+		printf("OTHER ERROR\n");
+		return -1;
+	   }
 	   id=atoi(optarg);
 	   break;
 	case 'f':
@@ -295,7 +363,6 @@ int main(int argc, char** argv) {
 	return -1;
   }
 	
-
   //if v flag is set, and any flag that isnt O is set, error
   if (vFlag==1){
 	if(fFlag==1 || mFlag==1 || iFlag==1){
@@ -303,7 +370,12 @@ int main(int argc, char** argv) {
 		return -1;
 	}
   }
- 
+  if(oFlag==1 && vFlag==0 && mFlag==0 && iFlag==0 && fFlag==0){
+	printf("OTHER ERROR\n");
+		return -1;
+	}
+
+  
   char *inputFile;
   argv+=optind;
   inputFile=*argv;
@@ -328,6 +400,10 @@ int main(int argc, char** argv) {
    char* f_major=malloc(5);
 
    while ( fscanf(fp,"%s %d %s %s %f %s",command,&f_id,f_fname,f_lname,&f_gpa,f_major) !=EOF){
+	if(checkArgs(f_id,f_fname,f_lname,f_gpa,f_major)==-1){
+		printf("FAILED TO PARSE INPUT FILE\n");
+		return -1;
+	}
 //	 printf("%d %s %s %.2f %s\n", f_id, f_fname, f_lname, f_gpa,f_major);
 //	printf("in scan loop \n");
 //	printf("command= %s\n", command);
@@ -359,7 +435,7 @@ int main(int argc, char** argv) {
   * This formatting for the string
   * that you are expected to follow
   */
-   if(vFlag==1)
+   if(vFlag==1 || oFlag==0)
 	printList(list);
    if(oFlag==1)
 	outputToFile(outputFile,list);
@@ -368,6 +444,8 @@ int main(int argc, char** argv) {
    free(f_fname);
    free(f_lname);
    free(f_major);
-   free(list);
+  //might need to write a function to iterate through list and free individually
+   freeList(list);
+ //  free(list);
  return 0;
 }
