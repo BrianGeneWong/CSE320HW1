@@ -483,7 +483,7 @@ int main(int argc, char** argv) {
 		//it will find one at max
 			node=getStudentID(list, id);
 			if (node==NULL){
-				printf("STUDENT RECORD NOT BE FOUND\n");
+				printf("STUDENT RECORD NOT FOUND\n");
 				return -1;
 			}
 			if(fFlag==1){
