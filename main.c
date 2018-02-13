@@ -25,7 +25,7 @@ struct student_records{
  // student_node *tail;
 };
 void stringCopy(char *str1, char *str2){
-   printf(" %s  ",  str2);
+  // printf(" %s  ",  str2);
    do{
 	*str1=*str2;
 	str1++;
@@ -37,9 +37,9 @@ void stringCopy(char *str1, char *str2){
 int addNode(struct student_records *list,int id,char* f_name, char* l_name,float gpa, char* major ){
    //check if id is unique first
    //if list is empty, easy
-	printf("in add node function\n");
+//	printf("in add node function\n");
    if (list->head==NULL){
-	printf("list head is null\n");
+//	printf("list head is null\n");
 	//make node
         student_node *node=malloc(sizeof(student_node));
 	node->student.firstName=malloc(sizeof(f_name));
@@ -93,8 +93,8 @@ int getStringLength(char* str){
 //function to check if 2 strings are equal
 //returns 0 if strings are not equal, 1 if they are
 int checkStrings(char *str1,char *str2){
- printf("checkStrigs method\n");
- printf ("str1 : %s , str2: %s \n", str1,str2);
+// printf("checkStrigs method\n");
+// printf ("str1 : %s , str2: %s \n", str1,str2);
  while(*str1!='\0'){
   	if(toupper(*str1)!=toupper(*str2))
 		return 0;
@@ -203,11 +203,11 @@ int main(int argc, char** argv) {
    char* f_major=malloc(5);
 
    while ( fscanf(fp,"%s %d %s %s %f %s",command,&f_id,f_fname,f_lname,&f_gpa,f_major) !=EOF){
-	 printf("%d %s %s %.2f %s\n", f_id, f_fname, f_lname, f_gpa,f_major);
+//	 printf("%d %s %s %.2f %s\n", f_id, f_fname, f_lname, f_gpa,f_major);
 //	printf("in scan loop \n");
 //	printf("command= %s\n", command);
 	if(checkStrings(command,"ADD")==1){
-		printf("head pointer: %p \n",list->head);
+//		printf("head pointer: %p \n",list->head);
 		if(addNode(list,f_id,f_fname,f_lname,f_gpa,f_major)==-1){
 			printf("ID NOT UNIQUE\n");
 			return-1;
